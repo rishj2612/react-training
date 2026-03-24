@@ -1,0 +1,66 @@
+'use client'
+
+import { SubmitEvent, useEffect, useRef, useState } from "react"
+import axios from "axios";
+import { useRouter } from "next/navigation";
+export default function Login() {
+    const [name, setName] = useState('');
+    const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
+    const router = useRouter();
+    const userNameRef = useRef<HTMLInputElement>(null);
+    const userPswdRef = useRef<HTMLInputElement>(null);
+    //console.log("login rendered");
+    //invoked once on component mount
+    useEffect(() => {
+        console.log("login mounted");
+        userPswdRef.current?.focus();
+        //callback invoked when component is unmounted
+        return () => {
+            console.log("login unmounted");
+        }
+    }, []);
+
+    async function handleLogin(event: SubmitEvent<HTMLFormElement>) {
+        event.preventDefault();
+        if (name && password) {
+            //validate the credentials
+            const url = "http://localhost:9000/login";
+            try {
+                const response = await axios.post(url, { name, password });
+                console.log("response", response);
+                setMessage("");
+                router.push("/");
+
+            } catch (error) {
+                console.log("errorResponse", error);
+                setMessage("Invalid Credentials");
+            }
+        } else {
+            setMessage("Enter the credentials");
+        }
+    }
+
+    return (
+        <div>
+            <h4>Login</h4>
+            {message ? <div className="alert alert-warning">{message}</div> : null}
+            <form onSubmit={handleLogin}>
+                <div className="form-group">
+                    <label htmlFor="username">UserName</label>
+                    <input id="username" type="text" value={name} ref={userNameRef}
+                        onChange={(evt) => setName(evt.target.value)} className="form-control"
+                        placeholder="User ID" />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="password">Password</label>
+                    <input id="password" type="password" value={password} ref={userPswdRef}
+                        onChange={(evt) => setPassword(evt.target.value)} className="form-control"
+                        placeholder="Password" />
+                </div>
+                <br />
+                <button className="btn btn-success">Login</button>
+            </form>
+        </div>
+    )
+}
