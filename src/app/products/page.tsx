@@ -53,6 +53,7 @@ export default function ListProducts() {
                             <p>Name: {product.name}</p>
                             <p>Price: {product.price}</p>
                             <p>Des: {product.description}</p>
+                            <p>Img:<img style={{height:"90px"}} src={product.imageUrl}></img></p>
                             <div>
                                 <button className="btn btn-warning" onClick={() => { deleteProduct(product) }}>Delete</button>&nbsp;
                                 <button className="btn btn-info" onClick={()=>editProduct(product)}>Edit</button>
