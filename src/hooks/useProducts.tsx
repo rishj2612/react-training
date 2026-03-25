@@ -3,7 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export function useProducts(){
-    const [products,setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<Product[]>([]);
     const url = "http://localhost:9000/products";
     async function fetchProducts(){
         try{
@@ -18,4 +18,5 @@ export function useProducts(){
     useEffect(()=>{
         fetchProducts();
     })
+    return {products,setProducts}
 }

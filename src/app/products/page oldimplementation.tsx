@@ -2,19 +2,27 @@
 
 import { Product } from "@/models/product";
 import axios from "axios"
-import { useCallback, useMemo, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { useRouter } from "next/navigation";
 import { ProductView } from "./ProductView";
-import { useProducts } from "@/hooks/useProducts";
 
 export default function ListProducts() {
     let url = "http://localhost:9000/products";
-   
+    const [products, setProducts] = useState<Product[]>([]);
     const [isMessageVisible, setMessageVisible] = useState(true);
     const router = useRouter();
-  
-    const {products,setProducts}=useProducts();
-  
+    useEffect(() => {
+        fetchProducts();
+    }, [])
+
+    async function fetchProducts() {
+        try {
+            const res = await axios.get<Product[]>(url);
+            setProducts(res.data);
+        } catch (e) {
+            console.log(e);
+        }
+    }
     const deleteProduct = useCallback(async (product: Product) => {
         try {
             const res = await axios.delete(url + "/" + product.id);
