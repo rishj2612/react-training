@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 export function useProducts(){
     const [products, setProducts] = useState<Product[]>([]);
     const url = "http://localhost:9000/products";
+    const controller = new AbortController();
     async function fetchProducts(){
         try{
-            const res = await axios.get<Product[]>(url);
+            const res = await axios.get<Product[]>(url,{signal:controller.signal});
             console.log(res);
             setProducts(res.data);
         }catch(error){
@@ -17,6 +18,9 @@ export function useProducts(){
 
     useEffect(()=>{
         fetchProducts();
-    })
+        return (()=>{
+            controller.abort();
+        })
+    },[])
     return {products,setProducts}
 }
