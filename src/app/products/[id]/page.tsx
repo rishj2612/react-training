@@ -12,7 +12,10 @@ export default function EditProduct() {
         fetchProductById();
     }, [])
 
-    const [product, setProduct] = useState<Product>();
+    const [product, setProduct] = useState<Product>({name:'',
+        price:0,
+        description:'',
+        imageUrl:''});
 
     async function fetchProductById() {
         try {
@@ -57,28 +60,28 @@ export default function EditProduct() {
             <form onSubmit={handleUpdate}>
                 <div className="form-group">
                     <label htmlFor="name">Product Name</label>
-                    <input id="name" type="text" value={product?.name} autoFocus
+                    <input id="name" type="text" value={product.name} autoFocus
                         onChange={(e) => { setProduct({ ...product, name: e.target.value }) }}
                         className="form-control"
                         placeholder="Product Name" />
                 </div>
                 <div className="form-group">
                     <label htmlFor="price">Product Price</label>
-                    <input id="price" type="number" value={product?.price}
+                    <input id="price" type="number" value={product.price}
                         onChange={(e) => { setProduct({ ...product, price: e.target.valueAsNumber }) }}
                         className="form-control"
                         placeholder="Product Price" />
                 </div>
                 <div className="form-group">
                     <label htmlFor="desc">Product Description</label>
-                    <input id="desc" type="text" value={product?.description}
+                    <input id="desc" type="text" value={product.description}
                         onChange={(e) => { setProduct({ ...product, description: e.target.value }) }}
                         className="form-control"
                         placeholder="Product Description" />
                 </div>
                 <div className="form-group">
                     <label htmlFor="image">Product Image link</label>
-                    <input id="image" type="text" value={product?.imageUrl}
+                    <input id="image" type="text" value={product.imageUrl}
                         onChange={(e) => { setProduct({ ...product, imageUrl: e.target.value }) }}
                         className="form-control"
                         placeholder="Product Image Url" />

@@ -3,6 +3,7 @@
 import { SubmitEvent, useEffect, useRef, useState } from "react"
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useTitle } from "@/hooks/useTitle";
 export default function Login() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
@@ -10,6 +11,7 @@ export default function Login() {
     const router = useRouter();
     const userNameRef = useRef<HTMLInputElement>(null);
     const userPswdRef = useRef<HTMLInputElement>(null);
+    useTitle("Login");
     //console.log("login rendered");
     //invoked once on component mount
     useEffect(() => {
@@ -20,6 +22,12 @@ export default function Login() {
             console.log("login unmounted");
         }
     }, []);
+
+    // useEffect(()=>{
+    //     document.title+=document.title+" Login";
+    // },[])
+
+
 
     async function handleLogin(event: SubmitEvent<HTMLFormElement>) {
         event.preventDefault();
