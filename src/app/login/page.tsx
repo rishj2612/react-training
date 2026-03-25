@@ -4,11 +4,13 @@ import { SubmitEvent, useEffect, useRef, useState } from "react"
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useTitle } from "@/hooks/useTitle";
+import { useStore } from 'react-redux';
 export default function Login() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const router = useRouter();
+    const store = useStore();
     const userNameRef = useRef<HTMLInputElement>(null);
     const userPswdRef = useRef<HTMLInputElement>(null);
     useTitle("Login");
@@ -38,14 +40,31 @@ export default function Login() {
                 const response = await axios.post(url, { name, password });
                 console.log("response", response);
                 setMessage("");
-                router.push("/");
-
+                let authAction = {
+                    type: 'login',
+                    payload: {
+                        isAuthenticated: true,
+                        username: name,
+                        accessToken: response.data.accessToken,
+                        refreshToken: response.data.refreshToken
+                    }
+                };
+                store.dispatch(authAction);
+                router.push("/products");
             } catch (error) {
                 console.log("errorResponse", error);
                 setMessage("Invalid Credentials");
+                let authAction = {
+                    type: 'logout'
+                }
+                store.dispatch(authAction)
             }
         } else {
             setMessage("Enter the credentials");
+            let authAction = {
+                type: 'logout'
+            }
+            store.dispatch(authAction)
         }
     }
 

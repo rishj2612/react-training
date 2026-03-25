@@ -9,7 +9,7 @@ import { useProducts } from "@/hooks/useProducts";
 
 export default function ListProducts() {
     let url = "http://localhost:9000/products";
-   
+  
     const [isMessageVisible, setMessageVisible] = useState(true);
     const router = useRouter();
   
