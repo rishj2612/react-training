@@ -4,7 +4,8 @@ import { SubmitEvent, useEffect, useRef, useState } from "react"
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useTitle } from "@/hooks/useTitle";
-import { useStore } from 'react-redux';
+import { useStore,useSelector } from 'react-redux';
+import { AppState } from "@/redux/store";
 export default function Login() {
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
@@ -13,10 +14,15 @@ export default function Login() {
     const store = useStore();
     const userNameRef = useRef<HTMLInputElement>(null);
     const userPswdRef = useRef<HTMLInputElement>(null);
+    const auth = useSelector((state:AppState)=>state.auth);
     useTitle("Login");
     //console.log("login rendered");
     //invoked once on component mount
     useEffect(() => {
+        // if(auth && auth.isAuthenticated){
+        //     router.push("/products");
+        //     return;
+        // }
         console.log("login mounted");
         userPswdRef.current?.focus();
         //callback invoked when component is unmounted

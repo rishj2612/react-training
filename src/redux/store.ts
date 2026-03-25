@@ -1,8 +1,11 @@
 import { authReducer } from './authReducer';
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
+import { gadgetsReducer } from './GadgetsReducer';
+
 
 const reducer = combineReducers({
-    auth: authReducer
+    auth: authReducer,
+    gadget: gadgetsReducer
 });
 
 export const store = configureStore({
