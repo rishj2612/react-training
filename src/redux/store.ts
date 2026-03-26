@@ -1,17 +1,17 @@
+//import {createStore, combineReducers} from 'redux';
+import {configureStore, combineReducers} from '@reduxjs/toolkit';
 import { authReducer } from './authReducer';
-import { configureStore, combineReducers } from '@reduxjs/toolkit'
-import { gadgetsReducer } from './GadgetsReducer';
-
+import { gadgetsReducer } from './gadgetsReducer';
 
 const reducer = combineReducers({
     auth: authReducer,
-    gadget: gadgetsReducer
-});
+    gadgets: gadgetsReducer
+})
 
-export const store = configureStore({
-    reducer
-    , devTools: true
-});
+// export const store = createStore(reducer,  
+//     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+
+export const store = configureStore({reducer, devTools: true})
 
 export type AppState = ReturnType<typeof store.getState>;
-export type AppDispath = typeof store.dispatch;
+export type AppDispatch = typeof store.dispatch;

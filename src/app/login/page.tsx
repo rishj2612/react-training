@@ -56,7 +56,7 @@ export default function Login() {
                     }
                 };
                 store.dispatch(authAction);
-                router.push("/products");
+                router.push("/gadgets");
             } catch (error) {
                 console.log("errorResponse", error);
                 setMessage("Invalid Credentials");
