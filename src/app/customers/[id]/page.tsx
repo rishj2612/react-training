@@ -20,6 +20,7 @@ type CustomerDetailsProps = {
 }
 
 export default async function CustomerDetails(props: CustomerDetailsProps) {
+    console.log("Rendering customer details...");
     const id = (await props.params).id;
     const url = `${process.env.BASE_URL}/customers/${id}`;
     const response = await fetch(url, { method: "GET" });

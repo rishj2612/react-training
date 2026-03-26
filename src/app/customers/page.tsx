@@ -1,6 +1,7 @@
 import { Customer } from "@/models/Customer";
 import { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
     title: "Awesome App: Customers",
@@ -8,11 +9,28 @@ export const metadata: Metadata = {
     keywords: ["global customers", "tech companies", "fortune 500"]
 };
 
-export default async function Customers() {
+export default async function CustomerListing() {
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    return (
+        <div>
+            <h4>Customer Listing</h4>
+            <Suspense fallback={<div className="alert alert-danger">Loading... customers #1</div>}>
+                <Customers timeout={7000} />
+            </Suspense>
+            <Suspense fallback={<div className="alert alert-warning">Loading... customers #2</div>}>
+                <Customers timeout={9000} />
+            </Suspense>
+        </div>
+    )
+}
 
+export async function Customers({timeout}:{timeout:number}) {
+     await new Promise(resolve => setTimeout(resolve, timeout));
     //api call/database call
+    console.log("Rendering customers...");
     const url = `${process.env.BASE_URL}/customers`;
-    const res = await fetch(url, { method: "GET" });
+    //cache no store will ensure ssr
+    const res = await fetch(url, { method: "GET", cache: "no-store" });
     const customers = await res.json() as Customer[];
     return (<div>
         <h6>Customers</h6>
@@ -28,7 +46,7 @@ export default async function Customers() {
                 {customers.map(customer => (
                     <tr key={customer.id}>
                         <td>{customer.id}</td>
-                        <td><Link href={"/customers/"+customer.id}>{customer.name}</Link></td>
+                        <td><Link href={"/customers/" + customer.id}>{customer.name}</Link></td>
                         <td>{customer.location}</td>
                     </tr>
                 ))}
