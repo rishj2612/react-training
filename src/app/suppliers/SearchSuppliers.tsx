@@ -30,7 +30,7 @@ export default function SearchSuppliers({ data }: SearchSuppliersProps) {
     return (
         <div>
             <div>
-                <input type="text" onChange={(e) => setSearchText(e.target.value)} value={searctText} />
+                <input type="text" onChange={(e) => setSearchText(e.target.value)} value={searctText} />&nbsp;&nbsp;
                 <button className="btn btn-warning" onClick={filterData}>Filter</button>
             </div>
 
