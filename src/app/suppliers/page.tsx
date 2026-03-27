@@ -4,7 +4,7 @@ import SearchSuppliers from "./SearchSuppliers";
 export default async function SuppliersPage() {
 
     async function fetchSuppliers(query?: string) {
-        const response = await fetch("http://localhost:3000/api/suppliers", { method: "GET" });
+        const response = await fetch("http://localhost:3000/api/suppliers?q="+query, { method: "GET" });
         const suppliers = await response.json();
         return suppliers;
     }

@@ -11,7 +11,8 @@ export async function GET(request: Request) {
     const filepath = path.join(process.cwd(), "data", "suppliers.json");
     const fileContent = await fs.readFile(filepath, 'utf-8');
     let suppliers = JSON.parse(fileContent) as Supplier[];
-    if (!query) {
+    console.log(query);
+    if (!query || query=='undefined' || query==null) {
         return   NextResponse.json({ suppliers })
     } else {
         suppliers = suppliers.filter(item =>

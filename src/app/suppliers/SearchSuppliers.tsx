@@ -8,19 +8,30 @@ type SearchSuppliersProps = {
 }
 
 export default function SearchSuppliers({ data }: SearchSuppliersProps) {
-    const [suppliers,setSuppliers]=useState<Supplier[]>();
-    useEffect(()=>{
+    const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+    const [originalSuppliers, setOriginalSuppliers] = useState<Supplier[]>([]);
+    const [searctText, setSearchText] = useState<string>('');
+    useEffect(() => {
         setSuppliers(data);
-    },data)
-    function filterData(event:ChangeEvent<HTMLInputElement>){
-        
-
+        setOriginalSuppliers(data);
+    }, data)
+    function filterData() {
+        if (searctText.trim() == '') {
+            setSuppliers(originalSuppliers);
+        }
+        let filteredSupplier = [...originalSuppliers];
+        filteredSupplier = filteredSupplier.filter((item) => item.name.toLowerCase().includes(searctText.toLocaleLowerCase()) ||
+            item.contactPerson.toLowerCase().includes(searctText.toLocaleLowerCase()) ||
+            item.email.toLowerCase().includes(searctText.toLocaleLowerCase()) ||
+            item.location.toLowerCase().includes(searctText.toLocaleLowerCase())
+        )
+        setSuppliers(filteredSupplier);
     }
     return (
         <div>
             <div>
-            <input type="text" onChange={filterData} />
-            <button className="btn btn-warning">Filter</button>
+                <input type="text" onChange={(e) => setSearchText(e.target.value)} value={searctText} />
+                <button className="btn btn-warning" onClick={filterData}>Filter</button>
             </div>
 
             <table className="table">
@@ -34,8 +45,8 @@ export default function SearchSuppliers({ data }: SearchSuppliersProps) {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map(item=>(
-                        <tr>
+                    {suppliers.map(item => (
+                        <tr key={item.id}>
                             <td>{item.id}</td>
                             <td>{item.name}</td>
                             <td>{item.contactPerson}</td>
