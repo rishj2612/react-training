@@ -8,7 +8,7 @@ export default function Home() {
       <Hello message="Hello React" color="blue"/>
       <Hello message="Hello Next.js" color="red"/>
       <Counter count={5}></Counter>
-      <Counter count={11}></Counter>
+  
     </div>
   );
 }

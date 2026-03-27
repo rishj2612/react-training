@@ -1,6 +1,6 @@
 'use client'
 
-import { BaseSyntheticEvent, ChangeEvent, useEffect, useRef, useState } from "react";
+import { BaseSyntheticEvent, ChangeEvent, useEffect, useEffectEvent, useRef, useState } from "react";
 
 type CounterProp = {
     count: number;
@@ -10,14 +10,28 @@ type CounterProp = {
 export default function Counter(props: CounterProp) {
     const [count, setCount] = useState(props.count);
     const inputRef = useRef<HTMLInputElement>(null);
+    let clickCount = useRef(0);
     useEffect(() => {
         console.log("Count", count);
     }, [count]);
+    useEffect(()=>{
+        const handler=setInterval(()=>{
+            logHandler();
+        },5000)
+        return ()=>{
+           clearInterval(handler);
+        }
+    },[])
+    const logHandler=useEffectEvent(()=>{
+         console.log("count",count);
+    })
     function increase() {
         console.log("increasing count");
         // setCount(count+1);
         setCount((prevCount) => prevCount + 1);
         setCount((prevCount) => prevCount + 1);
+        clickCount.current++;
+        console.log("clickCount:",clickCount.current);
 
         //    console.log("Count",count);
     }

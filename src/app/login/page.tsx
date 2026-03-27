@@ -75,7 +75,7 @@ export default function Login() {
     }
 
     return (
-        <div>
+        <>
             <h4>Login</h4>
             {message ? <div className="alert alert-warning">{message}</div> : null}
             <form onSubmit={handleLogin}>
@@ -94,6 +94,6 @@ export default function Login() {
                 <br />
                 <button className="btn btn-success">Login</button>
             </form>
-        </div>
+        </>
     )
 }

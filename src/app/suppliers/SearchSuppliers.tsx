@@ -1,57 +1,52 @@
 'use client'
 import { Supplier } from "@/models/Suppliers"
-import { ChangeEvent, useEffect, useState } from "react"
+import axios from "axios";
+import { use, useState } from "react";
 
-
-type SearchSuppliersProps = {
+type SearchSuppliersProps={
     data: Supplier[]
 }
 
-export default function SearchSuppliers({ data }: SearchSuppliersProps) {
-    const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-    const [originalSuppliers, setOriginalSuppliers] = useState<Supplier[]>([]);
-    const [searctText, setSearchText] = useState<string>('');
-    useEffect(() => {
-        setSuppliers(data);
-        setOriginalSuppliers(data);
-    }, data)
-    function filterData() {
-        if (searctText.trim() == '') {
-            setSuppliers(originalSuppliers);
+export default function SearchSuppliers({data}: SearchSuppliersProps){
+
+    const [searchText, setSearchText] = useState("")
+    const [suppliers, setSuppliers] = useState(data);
+    async function search(){
+        try {
+            const url = "http://localhost:3000/api/suppliers?q=" + searchText;
+            const response = await axios.get<Supplier[]>(url);
+            setSuppliers(response.data);
+        } catch (error) {
+            console.log(error);
         }
-        let filteredSupplier = [...originalSuppliers];
-        filteredSupplier = filteredSupplier.filter((item) => item.name.toLowerCase().includes(searctText.toLocaleLowerCase()) ||
-            item.contactPerson.toLowerCase().includes(searctText.toLocaleLowerCase()) ||
-            item.email.toLowerCase().includes(searctText.toLocaleLowerCase()) ||
-            item.location.toLowerCase().includes(searctText.toLocaleLowerCase())
-        )
-        setSuppliers(filteredSupplier);
     }
-    return (
+    return(
+
         <div>
-            <div>
-                <input type="text" onChange={(e) => setSearchText(e.target.value)} value={searctText} />&nbsp;&nbsp;
-                <button className="btn btn-warning" onClick={filterData}>Filter</button>
-            </div>
+            <input className="form-control" type="search" 
+                placeholder="Search" value={searchText} onChange={e => setSearchText(e.target.value)}/>
+            <br />
+            <button className="btn btn-success" onClick={search}>Search</button>
 
             <table className="table">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Contant Person</th>
-                        <th>Email</th>
+                        <th>Contact Person</th>
                         <th>Location</th>
+                        <th>Email</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {suppliers.map(item => (
-                        <tr key={item.id}>
-                            <td>{item.id}</td>
-                            <td>{item.name}</td>
-                            <td>{item.contactPerson}</td>
-                            <td>{item.email}</td>
-                            <td>{item.location}</td>
+                    {suppliers.map(supplier => (
+                        <tr key={supplier.id}>
+                            <td>{supplier.id}</td>
+                            <td>{supplier.name}</td>
+                            <td>{supplier.contactPerson}</td>
+                            <td>{supplier.location}</td>
+                            <td>{supplier.email}</td>
+                            
                         </tr>
                     ))}
                 </tbody>
